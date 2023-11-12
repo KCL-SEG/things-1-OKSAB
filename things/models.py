@@ -1,22 +1,24 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Thing(models.Model):
-    name = models.CharField(
-        max_length=30,            # Maximum length of 30 characters
-        unique=True,              # Name must be unique
-        blank=False               # Name must not be blank
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='thing_groups',  # Unique related name
     )
-    description = models.CharField(
-        max_length=120,           # Maximum length of 120 characters
-        unique=False,             # Description does not need to be unique
-        blank=True                # Description can be blank
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='thing_user_permissions',  # Unique related name
     )
+    name = models.CharField(max_length=30, blank=False, unique=True)
+    description= models.CharField(max_length=120, blank=True, unique=False)
     quantity = models.IntegerField(
         validators=[
-            MinValueValidator(0),  # Minimum value of 0
-            MaxValueValidator(100) # Maximum value of 100
+            MinValueValidator(0),  # Ensures quantity is not less than 0
+            MaxValueValidator(100) # Ensures quantity is not more than 100
         ],
-        unique=False,              # Quantity does not need to be unique
-        blank=False                # Quantity must not be blank
+        blank=False,  # Ensures quantity is not left blank, this is the default and can be omitted
+        null=False,   # Ensures quantity is not NULL in the database, this is the default and can be omitted
     )
+
