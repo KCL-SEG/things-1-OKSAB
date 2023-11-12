@@ -1,8 +1,19 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Things</title>
 </head>
-    <body>
-        <h1>Things</h1>
-    </body>
-</html>>
+<body>
+    <h1>Things</h1>
+    <ul>
+        {% for thing in things %}
+        <li>
+            <strong>Name:</strong> {{ thing.name }}<br>
+            <strong>Description:</strong> {{ thing.description }}<br>
+            <strong>Quantity:</strong> {{ thing.quantity }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
